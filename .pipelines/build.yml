@@ -50,7 +50,7 @@ jobs:
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'JUnit'
-        testResultsFiles: '**/test-results.xml'
+        testResultsFiles: '**/*test-results.xml'
         searchFolder: '$(System.DefaultWorkingDirectory)'
         failTaskOnFailedTests: false
       displayName: 'Publish Test Results'
