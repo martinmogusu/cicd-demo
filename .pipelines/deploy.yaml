@@ -4,10 +4,13 @@ resources:
       source: 'Build and Test'
       trigger: true
 
+trigger: none
+
 jobs:
   - job: deploy
     displayName: 'Deploy to Azure'
-    pool: default
+    pool:
+      vmImage: ubuntu-latest
     steps:
       - checkout: self
 
