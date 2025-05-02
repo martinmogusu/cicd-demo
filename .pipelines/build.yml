@@ -6,26 +6,29 @@
 trigger:
 - main
 
-pool: default
+jobs:
+  - job: build_and_test
+    displayName: Build and Test
+    pool: default
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '20.x'
+      displayName: 'Install Node.js'
 
-- script: |
-    npm install
-  displayName: 'Install Packages'
+    - script: |
+        npm install
+      displayName: 'Install Packages'
 
-- script: |
-    npx playwright install
-  displayName: 'Install Playwright Browsers'
+    - script: |
+        npx playwright install
+      displayName: 'Install Playwright Browsers'
 
-- script: |
-    npm run build
-  displayName: 'Build'
+    - script: |
+        npm run build
+      displayName: 'Build'
 
-- script: |
-    npm run test
-  displayName: 'Test'
+    - script: |
+        npm run test
+      displayName: 'Test'
