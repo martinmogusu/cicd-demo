@@ -28,6 +28,8 @@ export default defineConfig({
 					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}']
 				}
 			}
-		]
+		],
+    reporters: [ 'default', 'junit' ],
+    outputFile: 'test-results-vitest/vitest-junit-test-results.xml',
 	}
 });

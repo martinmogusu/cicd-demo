@@ -18,11 +18,11 @@ jobs:
       displayName: 'Install Node.js'
 
     - script: |
-        npm install
-      displayName: 'Install Packages'
+        npm ci
+      displayName: 'Install Packages (Clean Install)'
 
     - script: |
-        npx playwright install
+        npx playwright install --with-deps
       displayName: 'Install Playwright Browsers'
 
     - script: |
@@ -30,5 +30,28 @@ jobs:
       displayName: 'Build'
 
     - script: |
-        npm run test
+        npm run test:ci
       displayName: 'Test'
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'build'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      displayName: 'Copy Files to Staging Directory'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+      displayName: 'Publish Artifacts'
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/test-results.xml'
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        failTaskOnFailedTests: false
+      displayName: 'Publish Test Results'
+      condition: succeededOrFailed()
