@@ -4,22 +4,24 @@ resources:
       source: 'Build and Test'
       trigger: true
 
-pool: default
+jobs:
+  - job: deploy
+    displayName: 'Deploy to Azure'
+    pool: default
+    steps:
+      - checkout: self
 
-steps:
-  - checkout: self
+      - download: build
+        artifact: drop
+        displayName: 'Download build artifact'
+        patterns: '**/*'
 
-  - download: build
-    artifact: drop
-    displayName: 'Download build artifact'
-    patterns: '**/*'
-
-  - task: AzureStaticWebApp@0
-    inputs:
-      app_location: '.'
-      output_location: '$(Pipeline.Workspace)/drop'
-      skip_app_build: true
-      skip_api_build: true
-      is_static_export: true
-      azure_static_web_apps_api_token: $(deployment_token)
-    displayName: 'Deploy to Azure Static Web Apps'
+      - task: AzureStaticWebApp@0
+        inputs:
+          app_location: '.'
+          output_location: '$(Pipeline.Workspace)/drop'
+          skip_app_build: true
+          skip_api_build: true
+          is_static_export: true
+          azure_static_web_apps_api_token: $(deployment_token)
+        displayName: 'Deploy to Azure Static Web Apps'
