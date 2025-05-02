@@ -2,7 +2,10 @@ resources:
   pipelines:
     - pipeline: build
       source: 'Build and Test'
-      trigger: true
+      trigger: 
+        branches:
+          include:
+            - main
 
 trigger: none
 
