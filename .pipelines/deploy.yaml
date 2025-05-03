@@ -29,8 +29,5 @@ jobs:
           scriptType: 'pscore'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            az account set --subscription b7ecff0e-62e0-44cd-8091-228d1894ed1f
-            az staticwebapp upload `
-              --name testswa `
-              --resource-group cicd `
-              --source "$(Pipeline.Workspace)/drop"
+            $token = az staticwebapp secrets list --name testswa --resource-group cicd --query properties.apiKey -o tsv
+            npx swa deploy "$(Pipeline.Workspace)/drop" --deployment-token $token --env production
