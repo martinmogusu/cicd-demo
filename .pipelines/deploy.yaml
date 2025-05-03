@@ -17,6 +17,11 @@ jobs:
     steps:
       - checkout: self
 
+      - task: UseNode@1
+        displayName: 'Install Node.js'
+        inputs:
+          version: '20.x'
+
       - download: build
         artifact: drop
         displayName: 'Download build artifact'
