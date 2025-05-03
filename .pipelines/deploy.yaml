@@ -1,3 +1,17 @@
+parameters:
+  - name: azureSubscription
+    displayName: 'Azure Service Connection'
+    type: string
+    default: 'azure-service-connection'
+  - name: appName
+    displayName: 'App Name'
+    type: string
+    default: 'testswa'
+  - name: resourceGroup
+    displayName: 'Resource Group'
+    type: string
+    default: 'cicd'
+
 resources:
   pipelines:
     - pipeline: build
@@ -30,9 +44,9 @@ jobs:
       - task: AzureCLI@2
         displayName: 'Deploy to Azure Static Web Apps using az cli'
         inputs:
-          azureSubscription: 'azure-service-connection'
+          azureSubscription: ${{ parameters.azureSubscription }}
           scriptType: 'pscore'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            $token = az staticwebapp secrets list --name testswa --resource-group cicd --query properties.apiKey -o tsv
+            $token = az staticwebapp secrets list --name ${{ parameters.appName }} --resource-group ${{ parameters.resourceGroup }} --query properties.apiKey -o tsv
             npx @azure/static-web-apps-cli deploy "$(Pipeline.Workspace)/build/drop" --deployment-token $token --env production
