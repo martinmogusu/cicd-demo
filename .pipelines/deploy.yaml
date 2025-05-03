@@ -12,8 +12,8 @@ trigger: none
 jobs:
   - job: deploy
     displayName: 'Deploy to Azure'
-    pool:
-      vmImage: ubuntu-latest
+    pool: default
+
     steps:
       - checkout: self
 
