@@ -6,11 +6,11 @@ parameters:
   - name: appName
     displayName: 'App Name'
     type: string
-    default: 'testswa'
+    default: 'cicd-demo-app'
   - name: resourceGroup
     displayName: 'Resource Group'
     type: string
-    default: 'cicd'
+    default: 'cicd-demo'
 
 resources:
   pipelines:
