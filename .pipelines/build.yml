@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main
+  - main
 
 jobs:
   - job: build_and_test
@@ -17,41 +17,41 @@ jobs:
         inputs:
           version: '20.x'
 
-    - script: |
-        npm ci
-      displayName: 'Install Packages (Clean Install)'
+      - script: |
+          npm ci
+        displayName: 'Install Packages (Clean Install)'
 
-    - script: |
-        npx playwright install --with-deps
-      displayName: 'Install Playwright Browsers'
+      - script: |
+          npx playwright install --with-deps
+        displayName: 'Install Playwright Browsers'
 
-    - script: |
-        npm run build
-      displayName: 'Build'
+      - script: |
+          npm run build
+        displayName: 'Build'
 
-    - script: |
-        npm run test:ci
-      displayName: 'Test'
+      - script: |
+          npm run test:ci
+        displayName: 'Test'
 
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: 'build'
-        Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      displayName: 'Copy Files to Staging Directory'
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 'build'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        displayName: 'Copy Files to Staging Directory'
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
-      displayName: 'Publish Artifacts'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+        displayName: 'Publish Artifacts'
 
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/*test-results.xml'
-        searchFolder: '$(System.DefaultWorkingDirectory)'
-        failTaskOnFailedTests: false
-      displayName: 'Publish Test Results'
-      condition: succeededOrFailed()
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/*test-results.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          failTaskOnFailedTests: false
+        displayName: 'Publish Test Results'
+        condition: succeededOrFailed()
