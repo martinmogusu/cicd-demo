@@ -2,7 +2,7 @@ resources:
   pipelines:
     - pipeline: build
       source: 'Build and Test'
-      trigger: 
+      trigger:
         branches:
           include:
             - main
@@ -22,12 +22,15 @@ jobs:
         displayName: 'Download build artifact'
         patterns: '**/*'
 
-      - task: AzureStaticWebApp@0
+      - task: AzureCLI@2
+        displayName: 'Deploy to Azure Static Web Apps using az cli'
         inputs:
-          app_location: '.'
-          output_location: '$(Pipeline.Workspace)/drop'
-          skip_app_build: true
-          skip_api_build: true
-          is_static_export: true
-          azure_static_web_apps_api_token: $(deployment_token)
-        displayName: 'Deploy to Azure Static Web Apps'
+          azureSubscription: 'azure-service-connection'
+          scriptType: 'pscore'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az account set --subscription b7ecff0e-62e0-44cd-8091-228d1894ed1f
+            az staticwebapp upload `
+              --name testswa `
+              --resource-group cicd `
+              --source "$(Pipeline.Workspace)/drop"
