@@ -20,6 +20,7 @@ resources:
         branches:
           include:
             - main
+            - master
 
 trigger: none
 
