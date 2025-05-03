@@ -5,6 +5,7 @@
 
 trigger:
   - main
+  - master
 
 jobs:
   - job: build_and_test
