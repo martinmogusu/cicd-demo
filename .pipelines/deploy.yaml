@@ -35,4 +35,4 @@ jobs:
           scriptLocation: 'inlineScript'
           inlineScript: |
             $token = az staticwebapp secrets list --name testswa --resource-group cicd --query properties.apiKey -o tsv
-            npx @azure/static-web-apps-cli deploy "$(Pipeline.Workspace)/drop" --deployment-token $token --env production
+            npx @azure/static-web-apps-cli deploy "$(Pipeline.Workspace)/build/drop" --deployment-token $token --env production
