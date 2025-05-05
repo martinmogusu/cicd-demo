@@ -15,7 +15,7 @@
     "test:unit": "vitest",
     "test:unit:ci": "vitest --run --reporter=junit --reporter=default",
     "test:e2e": "playwright test",
-    "test:e2e:ci": "playwright test --headed --project=chromium",
+    "test:e2e:ci": "playwright test --headless --project=chromium",
     "test": "npm run test:unit -- --run && npm run test:e2e",
     "test:ci": "npm run test:unit:ci && npm run test:e2e:ci"
   },
